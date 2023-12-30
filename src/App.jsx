@@ -1,7 +1,23 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import Users from './user/pages/Users';
+import NewPlace from './places/pages/NewPlace';
 
 const App = () => {
-  return <h1>App.jsx here!</h1>;
+  return (
+    <Router>
+      <Routes>
+        <Route index element={<Users />} />
+        <Route path="/places/new" element={<NewPlace />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
