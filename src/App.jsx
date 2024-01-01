@@ -7,15 +7,19 @@ import {
 } from 'react-router-dom';
 import Users from './user/pages/Users';
 import NewPlace from './places/pages/NewPlace';
+import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route index element={<Users />} />
-        <Route path="/places/new" element={<NewPlace />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <MainNavigation />
+      <main>
+        <Routes>
+          <Route index element={<Users />} />
+          <Route path="/places/new" element={<NewPlace />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
     </Router>
   );
 };
