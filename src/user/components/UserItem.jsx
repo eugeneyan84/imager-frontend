@@ -1,3 +1,4 @@
+import Avatar from '../../shared/UIElements/Avatar';
 import './UserItem.css';
 
 const UserItem = ({ item }) => {
@@ -7,7 +8,7 @@ const UserItem = ({ item }) => {
     <li className="user-item">
       <div className="user-item__content">
         <div className="user-item__image">
-          <img src={image} alt={name} />
+          <Avatar image={image} alt={name} />
         </div>
         <div className="user-item__info">
           <h2>{name}</h2>
