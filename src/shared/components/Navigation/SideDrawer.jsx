@@ -2,7 +2,7 @@ import './SideDrawer.css';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
-const SideDrawer = ({ show, children }) => {
+const SideDrawer = ({ show, onClick, children }) => {
   const drawerElement = (
     <CSSTransition
       in={show}
@@ -11,7 +11,9 @@ const SideDrawer = ({ show, children }) => {
       mountOnEnter
       unmountOnExit
     >
-      <aside className="side-drawer">{children}</aside>
+      <aside className="side-drawer" onClick={onClick}>
+        {children}
+      </aside>
     </CSSTransition>
   );
 
