@@ -4,9 +4,10 @@ import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import './PlaceItem.css';
 import Modal from '../../shared/components/UIElements/Modal';
+import Map from '../../shared/components/UIElements/Map';
 
 const PlaceItem = ({ place }) => {
-  const { id, imageUrl, title, address, description } = place;
+  const { id, imageUrl, title, address, description, location } = place;
 
   const [showMap, setShowMap] = useState(false);
 
@@ -29,7 +30,7 @@ const PlaceItem = ({ place }) => {
         footer={<Button onClick={closeMap}>CLOSE</Button>}
       >
         <div className="map-container">
-          <h2>Map here!</h2>
+          <Map center={location} zoom={15} />
         </div>
       </Modal>
       <li className="place-item">
