@@ -29,6 +29,20 @@ const FAKE_PLACES = [
     },
     creator: 'u2',
   },
+  {
+    id: 31058,
+    title: 'Gardens by the Bay',
+    description:
+      'A nature park spanning 101 hectares in the Central Region of Singapore, adjacent to the Marina Reservoir. The park consists of three waterfront gardens: Bay South Garden, Bay East Garden and Bay Central Garden.',
+    imageUrl:
+      'https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/about-us/our-garden-story/sustainability-efforts/main/our-sustainability.jpg.transform/resize1280x720/convert1x1/image.jpg',
+    address: '18 Marina Gardens Dr, Singapore 018953',
+    location: {
+      lat: 1.28472,
+      lng: 103.865,
+    },
+    creator: 'u1',
+  },
 ];
 
 const UserPlaces = () => {
