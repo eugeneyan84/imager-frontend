@@ -3,10 +3,10 @@ import UsersList from '../components/UsersList';
 const Users = () => {
   const USERS = [
     {
-      id: 'a1',
+      id: 'u1',
       name: 'Jackie Welles',
       image: 'https://i.imgur.com/zxlrGXD.png',
-      placeCount: 3,
+      placeCount: 1,
     },
   ];
   return <UsersList items={USERS} />;
