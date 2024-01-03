@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import PlaceList from '../components/PlaceList';
 
 const FAKE_PLACES = [
@@ -31,7 +32,12 @@ const FAKE_PLACES = [
 ];
 
 const UserPlaces = () => {
-  return <PlaceList items={FAKE_PLACES} />;
+  const userId = useParams().userId;
+  const filteredPlaces = FAKE_PLACES.filter(
+    (place) => place.creator === userId
+  );
+
+  return <PlaceList items={filteredPlaces} />;
 };
 
 export default UserPlaces;
