@@ -31,7 +31,7 @@
 
 .form-control--invalid label,
 .form-control--invalid p {
-  border-color: red;
+  color: red;
 }
 
 .form-control--invalid input,
