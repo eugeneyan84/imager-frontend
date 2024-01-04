@@ -40,7 +40,9 @@ const Input = ({
     });
   };
 
-  const touchHandler = () => {};
+  const touchHandler = () => {
+    dispatch({ type: 'TOUCH' });
+  };
 
   const element =
     elementOption === 'input' ? (
