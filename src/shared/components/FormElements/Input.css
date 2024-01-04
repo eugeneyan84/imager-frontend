@@ -32,10 +32,17 @@
 .form-control--invalid label,
 .form-control--invalid p {
   color: red;
+  margin-top: 1px;
+  font-size: 0.8rem;
 }
 
 .form-control--invalid input,
 .form-control--invalid textarea {
   border-color: red;
   background: #ffd1d1;
+}
+
+.form-control--invalid input:focus {
+  border-color: red;
+  background: #ebebeb;
 }
