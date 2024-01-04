@@ -1,15 +1,24 @@
 import { useReducer } from 'react';
 
 import './Input.css';
+import { validate } from '../../util/Validators';
 
 const inputReducer = (state, action) => {
   switch (action.type) {
     case 'CHANGE':
-      return { ...state, value: action.payload, isValid: true };
+      return {
+        ...state,
+        value: action.payload,
+        isValid: validate(action.payload, action.validators),
+      };
+    case 'TOUCH':
+      return { ...state, isTouched: true };
     default:
       return state;
   }
 };
+
+const INITIAL_STATE = { value: '', isValid: false, isTouched: false };
 
 const Input = ({
   elementOption,
@@ -20,14 +29,18 @@ const Input = ({
   placeholder,
   rows,
   errorText,
+  validators,
 }) => {
-  const [state, dispatch] = useReducer(inputReducer, {
-    value: '',
-    isValid: false,
-  });
+  const [state, dispatch] = useReducer(inputReducer, INITIAL_STATE);
   const changeHandler = (event) => {
-    dispatch({ type: 'CHANGE', payload: event.target.value });
+    dispatch({
+      type: 'CHANGE',
+      payload: event.target.value,
+      validators: validators,
+    });
   };
+
+  const touchHandler = () => {};
 
   const element =
     elementOption === 'input' ? (
@@ -37,6 +50,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={changeHandler}
         value={state.value}
+        onBlur={touchHandler}
       />
     ) : (
       <textarea
@@ -44,18 +58,19 @@ const Input = ({
         rows={rows || 3}
         onChange={changeHandler}
         value={state.value}
+        onBlur={touchHandler}
       />
     );
 
   return (
     <div
       className={`form-control ${className} ${
-        !state.isValid && 'form-control--invalid'
+        !state.isValid && state.isTouched && 'form-control--invalid'
       }`}
     >
       <label htmlFor={id}>{label}</label>
       {element}
-      {!state.isValid && <p>{errorText}</p>}
+      {!state.isValid && state.isTouched && <p>{errorText}</p>}
     </div>
   );
 };
