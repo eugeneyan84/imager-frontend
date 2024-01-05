@@ -28,12 +28,18 @@ const Input = ({
   label,
   type,
   placeholder,
+  initialValue,
+  valid,
   rows,
   errorText,
   validators,
   onInput,
 }) => {
-  const [state, dispatch] = useReducer(inputReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(inputReducer, {
+    ...INITIAL_STATE,
+    value: initialValue || '',
+    isValid: valid || false,
+  });
 
   const { value, isValid } = state;
   useEffect(() => {
