@@ -8,36 +8,55 @@ import {
 } from '../../shared/util/Validators';
 import Button from '../../shared/components/FormElements/Button';
 import { useForm } from '../../shared/hooks/useForm';
+import { useEffect, useState } from 'react';
 
 const UpdatePlace = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const placeId = useParams().placeId;
 
-  const targetPlace = TEST_PLACES.find((place) => {
-    return place.id === Number(placeId);
-  });
-
-  const { formState, inputHandler } = useForm(
+  const { formState, inputHandler, setFormData } = useForm(
     {
-      title: { value: targetPlace.title, isValid: true },
-      description: { value: targetPlace.description, isValid: true },
-      address: { value: targetPlace.address, isValid: true },
+      title: { value: '', isValid: false },
+      description: { value: '', isValid: false },
+      address: { value: '', isValid: false },
     },
     false
   );
+
+  //let targetPlace;
+  useEffect(() => {
+    const targetPlace = TEST_PLACES.find((place) => {
+      return place.id === Number(placeId);
+    });
+
+    if (!targetPlace) {
+      return (
+        <div className="center">
+          <h2>Could not find place!</h2>
+        </div>
+      );
+    } else {
+      console.log(targetPlace);
+      setFormData({
+        title: { value: targetPlace.title, isValid: true },
+        description: { value: targetPlace.description, isValid: true },
+        address: { value: targetPlace.address, isValid: true },
+      });
+    }
+    setIsLoading(false);
+  }, [placeId, setFormData]);
 
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
   };
 
-  if (!targetPlace) {
+  if (isLoading) {
     return (
       <div className="center">
-        <h2>Could not find place!</h2>
+        <h2>Loading...</h2>
       </div>
     );
-  } else {
-    console.log(targetPlace);
   }
 
   return (
@@ -51,7 +70,7 @@ const UpdatePlace = () => {
         errorText="Please enter a valid title."
         onInput={inputHandler}
         initialValue={formState.inputs.title.value}
-        valid={true}
+        valid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
