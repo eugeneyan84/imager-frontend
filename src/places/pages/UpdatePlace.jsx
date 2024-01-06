@@ -9,6 +9,7 @@ import {
 import Button from '../../shared/components/FormElements/Button';
 import { useForm } from '../../shared/hooks/useForm';
 import { useEffect, useState } from 'react';
+import Card from '../../shared/components/UIElements/Card';
 
 const UpdatePlace = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +33,9 @@ const UpdatePlace = () => {
     if (!targetPlace) {
       return (
         <div className="center">
-          <h2>Could not find place!</h2>
+          <Card>
+            <h2>Could not find place!</h2>
+          </Card>
         </div>
       );
     } else {
