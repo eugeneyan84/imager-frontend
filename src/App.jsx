@@ -21,22 +21,36 @@ const App = () => {
   const logout = useCallback(() => {
     setIsLoggedIn(false);
   }, []);
+
+  let routes;
+  if (isLoggedIn) {
+    routes = (
+      <Routes>
+        <Route index element={<Users />} />
+        <Route path="/:userId/places" element={<UserPlaces />} />
+        <Route path="/places/new" element={<NewPlace />} />
+        <Route path="/places/:placeId" element={<UpdatePlace />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    );
+  } else {
+    routes = (
+      <Routes>
+        <Route index element={<Users />} />
+        <Route path="/:userId/places" element={<UserPlaces />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    );
+  }
+
   return (
     <AuthContext.Provider
       value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
     >
       <Router>
         <MainNavigation />
-        <main>
-          <Routes>
-            <Route index element={<Users />} />
-            <Route path="/places/new" element={<NewPlace />} />
-            <Route path="/places/:placeId" element={<UpdatePlace />} />
-            <Route path="/:userId/places" element={<UserPlaces />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
+        <main>{routes}</main>
       </Router>
     </AuthContext.Provider>
   );
