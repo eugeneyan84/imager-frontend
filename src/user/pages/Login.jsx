@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../../shared/components/FormElements/Button';
 import Input from '../../shared/components/FormElements/Input';
 import Card from '../../shared/components/UIElements/Card';
@@ -8,6 +8,7 @@ import {
   VALIDATOR_REQUIRE,
 } from '../../shared/util/Validators';
 import './Login.css';
+import { AuthContext } from '../../shared/context/authContext';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -15,10 +16,12 @@ const Login = () => {
     email: { value: '', isValid: false },
     password: { value: '', isValid: false },
   });
+  const authContext = useContext(AuthContext);
 
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
+    authContext.login();
   };
 
   const toggleModeHandler = () => {
