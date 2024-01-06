@@ -39,7 +39,7 @@ export const validate = (value, validators) => {
       isValid = isValid && +value <= validator.val;
     }
     if (validator.type === VALIDATOR_TYPE_EMAIL) {
-      isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
+      isValid = isValid && /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
     }
   }
   return isValid;
