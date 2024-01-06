@@ -10,6 +10,7 @@ const PlaceItem = ({ place }) => {
   const { id, imageUrl, title, address, description, location } = place;
 
   const [showMap, setShowMap] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const openMap = () => {
     setShowMap(true);
@@ -17,6 +18,19 @@ const PlaceItem = ({ place }) => {
 
   const closeMap = () => {
     setShowMap(false);
+  };
+
+  const showDeleteConfirmationHandler = () => {
+    setShowDeleteConfirmation(true);
+  };
+
+  const cancelDeleteHandler = () => {
+    setShowDeleteConfirmation(false);
+  };
+
+  const deleteHandler = () => {
+    console.log('Deleting!');
+    setShowDeleteConfirmation(false);
   };
 
   return (
@@ -33,6 +47,26 @@ const PlaceItem = ({ place }) => {
           <Map center={location} zoom={15} />
         </div>
       </Modal>
+      <Modal
+        header="Delete Place"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteHandler}>
+              Cancel
+            </Button>
+            <Button danger onClick={deleteHandler}>
+              Delete
+            </Button>
+          </>
+        }
+        show={showDeleteConfirmation}
+        onCancel={cancelDeleteHandler}
+      >
+        <p>
+          Confirm to proceed with deletion of <strong>{title}</strong>?
+        </p>
+      </Modal>
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
@@ -48,7 +82,9 @@ const PlaceItem = ({ place }) => {
               VIEW ON MAP
             </Button>
             <Button to={`/places/${id}`}>EDIT</Button>
-            <Button danger>DELETE</Button>
+            <Button danger onClick={showDeleteConfirmationHandler}>
+              DELETE
+            </Button>
           </div>
         </Card>
       </li>
