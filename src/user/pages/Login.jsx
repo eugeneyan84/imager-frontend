@@ -9,19 +9,52 @@ import {
 } from '../../shared/util/Validators';
 import './Login.css';
 import { AuthContext } from '../../shared/context/authContext';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const { formState, inputHandler, setFormData } = useForm({
     email: { value: '', isValid: false },
     password: { value: '', isValid: false },
   });
   const authContext = useContext(AuthContext);
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
-    authContext.login();
+    if (isLoginMode) {
+      const response = await fetch();
+    } else {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/signup`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: formState.inputs.name.value,
+              email: formState.inputs.email.value,
+              password: formState.inputs.password.value,
+            }),
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        authContext.login();
+      } catch (error) {
+        console.error(error);
+        setError(
+          error.message ||
+            `Error encountered during ${
+              isLoginMode ? 'log in' : 'sign up'
+            }, please try again.`
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   const toggleModeHandler = () => {
@@ -44,6 +77,7 @@ const Login = () => {
 
   return (
     <Card className="authentication">
+      {isLoading && <LoadingSpinner asOverlay />}
       <h2>Account Login</h2>
       <hr />
       <form onSubmit={submitHandler}>
