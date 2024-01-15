@@ -10,6 +10,7 @@ import {
 import './Login.css';
 import { AuthContext } from '../../shared/context/authContext';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -41,10 +42,11 @@ const Login = () => {
           }
         );
         const data = await response.json();
-        console.log(data);
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
         authContext.login();
       } catch (error) {
-        console.error(error);
         setError(
           error.message ||
             `Error encountered during ${
@@ -75,50 +77,57 @@ const Login = () => {
     setIsLoginMode((mode) => !mode);
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
-    <Card className="authentication">
-      {isLoading && <LoadingSpinner asOverlay />}
-      <h2>Account Login</h2>
-      <hr />
-      <form onSubmit={submitHandler}>
-        {!isLoginMode && (
+    <>
+      <ErrorModal error={error} onClear={errorHandler} />
+      <Card className="authentication">
+        {isLoading && <LoadingSpinner asOverlay />}
+        <h2>Account Login</h2>
+        <hr />
+        <form onSubmit={submitHandler}>
+          {!isLoginMode && (
+            <Input
+              elementOption="input"
+              id="name"
+              type="text"
+              validators={[VALIDATOR_REQUIRE()]}
+              placeholder="Name"
+              errorText="Please provide a valid Name"
+              onInput={inputHandler}
+            />
+          )}
+          <Input
+            id="email"
+            elementOption="input"
+            type="email"
+            label=""
+            onInput={inputHandler}
+            validators={[VALIDATOR_EMAIL()]}
+            placeholder="Email address"
+            errorText="Please provide a vaild email address"
+          />
           <Input
             elementOption="input"
-            id="name"
-            type="text"
+            type="password"
+            id="password"
             validators={[VALIDATOR_REQUIRE()]}
-            placeholder="Name"
-            errorText="Please provide a valid Name"
+            errorText="Please provide a password"
+            placeholder="Password"
             onInput={inputHandler}
           />
-        )}
-        <Input
-          id="email"
-          elementOption="input"
-          type="email"
-          label=""
-          onInput={inputHandler}
-          validators={[VALIDATOR_EMAIL()]}
-          placeholder="Email address"
-          errorText="Please provide a vaild email address"
-        />
-        <Input
-          elementOption="input"
-          type="password"
-          id="password"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please provide a password"
-          placeholder="Password"
-          onInput={inputHandler}
-        />
-        <Button type="submit" disabled={!formState.isValid}>
-          {isLoginMode ? 'Log In' : 'Sign Up'}
+          <Button type="submit" disabled={!formState.isValid}>
+            {isLoginMode ? 'Log In' : 'Sign Up'}
+          </Button>
+        </form>
+        <Button inverse onClick={toggleModeHandler}>
+          Switch to {isLoginMode ? 'Sign Up' : 'Log In'}
         </Button>
-      </form>
-      <Button inverse onClick={toggleModeHandler}>
-        Switch to {isLoginMode ? 'Sign Up' : 'Log In'}
-      </Button>
-    </Card>
+      </Card>
+    </>
   );
 };
 
