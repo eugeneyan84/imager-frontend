@@ -35,7 +35,9 @@ export const useApi = () => {
         setIsLoading(false);
         return data;
       } catch (error) {
-        setError(error.message);
+        if (error.name !== 'AbortError') {
+          setError(error.message);
+        }
         setIsLoading(false);
         throw error;
       }
