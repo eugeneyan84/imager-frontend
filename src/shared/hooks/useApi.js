@@ -23,15 +23,21 @@ export const useApi = () => {
         });
 
         const data = await response.json();
+
+        activeHttpRequests.current = activeHttpRequests.current.filter(
+          (controller) => controller !== httpAbortController
+        );
+
         if (!response.ok) {
           throw new Error(data.message);
         }
 
+        setIsLoading(false);
         return data;
       } catch (error) {
         setError(error.message);
-      } finally {
         setIsLoading(false);
+        throw error;
       }
     },
     []
