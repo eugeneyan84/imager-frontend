@@ -24,11 +24,37 @@ const Login = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     if (isLoginMode) {
-      const response = await fetch();
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/login`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: formState.inputs.email.value,
+              password: formState.inputs.password.value,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+        authContext.login();
+      } catch (error) {
+        setError(
+          error.message ||
+            `Error encountered during ${
+              isLoginMode ? 'log in' : 'sign up'
+            }, please try again.`
+        );
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       try {
-        setIsLoading(true);
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/signup`,
           {
