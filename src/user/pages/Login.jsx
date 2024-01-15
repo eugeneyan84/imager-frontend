@@ -30,7 +30,7 @@ const Login = () => {
     event.preventDefault();
     if (isLoginMode) {
       try {
-        await sendRequest(
+        const response = await sendRequest(
           `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/login`,
           'POST',
           JSON.stringify({
@@ -39,14 +39,15 @@ const Login = () => {
           }),
           { 'Content-Type': 'application/json' }
         );
-        authContext.login();
+        console.log(response.user);
+        authContext.login(response.user.id);
       } catch (error) {
         // do not process further, as error handling is done in useApi
         console.error(error.message);
       }
     } else {
       try {
-        await sendRequest(
+        const response = await sendRequest(
           `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/signup`,
           'POST',
           JSON.stringify({
@@ -56,7 +57,7 @@ const Login = () => {
           }),
           { 'Content-Type': 'application/json' }
         );
-        authContext.login();
+        authContext.login(response.user.id);
       } catch (error) {
         console.error(error);
       }
