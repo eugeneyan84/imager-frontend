@@ -11,11 +11,15 @@ import './Login.css';
 import { AuthContext } from '../../shared/context/authContext';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import { useApi } from '../../shared/hooks/useApi';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  //const [isLoading, setIsLoading] = useState(false);
+  //const [error, setError] = useState();
+
+  const { isLoading, error, sendRequest, clearError } = useApi();
+
   const { formState, inputHandler, setFormData } = useForm({
     email: { value: '', isValid: false },
     password: { value: '', isValid: false },
@@ -24,63 +28,37 @@ const Login = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
     if (isLoginMode) {
       try {
-        const response = await fetch(
+        await sendRequest(
           `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/login`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: formState.inputs.email.value,
-              password: formState.inputs.password.value,
-            }),
-          }
+          'POST',
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          { 'Content-Type': 'application/json' }
         );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
         authContext.login();
       } catch (error) {
-        setError(
-          error.message ||
-            `Error encountered during ${
-              isLoginMode ? 'log in' : 'sign up'
-            }, please try again.`
-        );
-      } finally {
-        setIsLoading(false);
+        // do not process further, as error handling is done in useApi
+        console.error(error.message);
       }
     } else {
       try {
-        const response = await fetch(
+        await sendRequest(
           `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/signup`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: formState.inputs.name.value,
-              email: formState.inputs.email.value,
-              password: formState.inputs.password.value,
-            }),
-          }
+          'POST',
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          { 'Content-Type': 'application/json' }
         );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
         authContext.login();
       } catch (error) {
-        setError(
-          error.message ||
-            `Error encountered during ${
-              isLoginMode ? 'log in' : 'sign up'
-            }, please try again.`
-        );
-      } finally {
-        setIsLoading(false);
+        console.error(error);
       }
     }
   };
@@ -103,13 +81,9 @@ const Login = () => {
     setIsLoginMode((mode) => !mode);
   };
 
-  const errorHandler = () => {
-    setError(null);
-  };
-
   return (
     <>
-      <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={error} onClear={clearError} />
       <Card className="authentication">
         {isLoading && <LoadingSpinner asOverlay />}
         <h2>Account Login</h2>
