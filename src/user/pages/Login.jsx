@@ -5,6 +5,7 @@ import Card from '../../shared/components/UIElements/Card';
 import { useForm } from '../../shared/hooks/useForm';
 import {
   VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from '../../shared/util/Validators';
 import './Login.css';
@@ -15,8 +16,6 @@ import { useApi } from '../../shared/hooks/useApi';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
-  //const [isLoading, setIsLoading] = useState(false);
-  //const [error, setError] = useState();
 
   const { isLoading, error, sendRequest, clearError } = useApi();
 
@@ -115,8 +114,8 @@ const Login = () => {
             elementOption="input"
             type="password"
             id="password"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please provide a password"
+            validators={[VALIDATOR_MINLENGTH(6)]}
+            errorText="Please provide a valid password of at least 6 characters"
             placeholder="Password"
             onInput={inputHandler}
           />
