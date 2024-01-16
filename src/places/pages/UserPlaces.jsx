@@ -23,6 +23,10 @@ const UserPlaces = () => {
     getPlaces();
   }, [sendRequest, userId]);
 
+  const deletePlaceHandler = (placeId) => {
+    setPlaces((places) => places.filter((p) => p.id !== placeId));
+  };
+
   /*   const filteredPlaces = TEST_PLACES.filter(
     (place) => place.creator === userId
   ); */
@@ -30,8 +34,10 @@ const UserPlaces = () => {
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-      {isLoading && <LoadingSpinner />}
-      {!isLoading && places && <PlaceList items={places} />}
+      {isLoading && <LoadingSpinner asOverlay />}
+      {!isLoading && places && (
+        <PlaceList items={places} onDeletePlace={deletePlaceHandler} />
+      )}
     </>
   );
 };

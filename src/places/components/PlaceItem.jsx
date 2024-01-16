@@ -6,9 +6,13 @@ import './PlaceItem.css';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
 import { AuthContext } from '../../shared/context/authContext';
+import { useApi } from '../../shared/hooks/useApi';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
-const PlaceItem = ({ place }) => {
+const PlaceItem = ({ place, onDelete }) => {
   const { isLoggedIn } = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useApi();
   const { id, imageUrl, title, address, description, location } = place;
 
   const [showMap, setShowMap] = useState(false);
@@ -30,13 +34,20 @@ const PlaceItem = ({ place }) => {
     setShowDeleteConfirmation(false);
   };
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     console.log('Deleting!');
     setShowDeleteConfirmation(false);
+    try {
+      await sendRequest(`/api/places/${id}`, 'DELETE');
+      onDelete(id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showMap}
         onCancel={closeMap}
@@ -71,6 +82,7 @@ const PlaceItem = ({ place }) => {
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
             <img src={imageUrl} alt={title} />
           </div>
