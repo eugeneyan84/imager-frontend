@@ -31,7 +31,7 @@ const Login = () => {
     if (isLoginMode) {
       try {
         const response = await sendRequest(
-          `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/login`,
+          '/api/users/login',
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -48,7 +48,7 @@ const Login = () => {
     } else {
       try {
         const response = await sendRequest(
-          `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users/signup`,
+          '/api/users/signup',
           'POST',
           JSON.stringify({
             name: formState.inputs.name.value,

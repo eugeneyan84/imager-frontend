@@ -41,7 +41,7 @@ const NewPlace = () => {
     //console.log(formState.inputs);
     try {
       await sendRequest(
-        `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/places`,
+        '/api/places',
         'POST',
         JSON.stringify({
           title: formState.inputs.title.value,

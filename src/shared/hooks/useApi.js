@@ -8,19 +8,22 @@ export const useApi = () => {
   const activeHttpRequests = useRef([]);
 
   const sendRequest = useCallback(
-    async (url, method = 'GET', body = null, headers = {}) => {
+    async (urlRoute, method = 'GET', body = null, headers = {}) => {
       try {
         setIsLoading(true);
 
         const httpAbortController = new AbortController();
         activeHttpRequests.current.push(httpAbortController);
 
-        const response = await fetch(url, {
-          method,
-          headers,
-          body,
-          signal: httpAbortController.signal,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_HOSTNAME}${urlRoute}`,
+          {
+            method,
+            headers,
+            body,
+            signal: httpAbortController.signal,
+          }
+        );
 
         const data = await response.json();
 

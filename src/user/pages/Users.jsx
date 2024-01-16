@@ -14,9 +14,7 @@ const Users = () => {
   useEffect(() => {
     const request = async () => {
       try {
-        const response = await sendRequest(
-          `${import.meta.env.VITE_BACKEND_HOSTNAME}/api/users`
-        );
+        const response = await sendRequest('/api/users');
 
         setUsers(response.users);
       } catch (error) {
