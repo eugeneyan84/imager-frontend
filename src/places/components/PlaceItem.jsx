@@ -11,9 +11,10 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 const PlaceItem = ({ place, onDelete }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, userId: authUserId } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useApi();
-  const { id, imageUrl, title, address, description, location } = place;
+  const { id, imageUrl, title, address, description, location, creator } =
+    place;
 
   const [showMap, setShowMap] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -95,8 +96,10 @@ const PlaceItem = ({ place, onDelete }) => {
             <Button inverse onClick={openMap}>
               VIEW ON MAP
             </Button>
-            {isLoggedIn && <Button to={`/places/${id}`}>EDIT</Button>}
-            {isLoggedIn && (
+            {authUserId === creator && (
+              <Button to={`/places/${id}`}>EDIT</Button>
+            )}
+            {authUserId === creator && (
               <Button danger onClick={showDeleteConfirmationHandler}>
                 DELETE
               </Button>
