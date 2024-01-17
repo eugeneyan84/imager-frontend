@@ -70,12 +70,17 @@ const Login = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
-        { ...formState.inputs, name: { value: '', isValid: false } },
+        {
+          ...formState.inputs,
+          name: { value: '', isValid: false },
+          image: { value: null, isValid: false },
+        },
         false
       );
     }
@@ -101,7 +106,9 @@ const Login = () => {
               onInput={inputHandler}
             />
           )}
-          {!isLoginMode && <ImageUpload center id="image" />}
+          {!isLoginMode && (
+            <ImageUpload center id="image" onFileInput={inputHandler} />
+          )}
           <Input
             id="email"
             elementOption="input"
