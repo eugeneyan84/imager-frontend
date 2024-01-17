@@ -13,6 +13,7 @@ const Button = ({
   onClick,
   disabled,
   children,
+  style,
 }) => {
   if (href) {
     return (
@@ -47,6 +48,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      style={style}
     >
       {children}
     </button>
