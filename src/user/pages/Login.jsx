@@ -13,6 +13,7 @@ import { AuthContext } from '../../shared/context/authContext';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useApi } from '../../shared/hooks/useApi';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 const Login = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -100,6 +101,7 @@ const Login = () => {
               onInput={inputHandler}
             />
           )}
+          {!isLoginMode && <ImageUpload center id="image" />}
           <Input
             id="email"
             elementOption="input"
