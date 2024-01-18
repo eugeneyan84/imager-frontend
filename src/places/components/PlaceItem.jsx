@@ -85,7 +85,10 @@ const PlaceItem = ({ place, onDelete }) => {
         <Card className="place-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
-            <img src={imageUrl} alt={title} />
+            <img
+              src={`${import.meta.env.VITE_BACKEND_HOSTNAME}/${imageUrl}`}
+              alt={title}
+            />
           </div>
           <div className="place-item__info">
             <h2>{title}</h2>
