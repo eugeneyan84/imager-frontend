@@ -15,6 +15,13 @@ const ImageUpload = ({ id, center, onFileInput, errorText }) => {
     } else {
       const fileReader = new FileReader();
       fileReader.onload = () => {
+        let image = new Image();
+        image.src = fileReader.result;
+        image.onload = () => {
+          console.log(
+            `image width: ${image.width}px, height: ${image.height}px`
+          );
+        };
         setPreview(fileReader.result);
       };
       fileReader.readAsDataURL(file);
@@ -26,7 +33,6 @@ const ImageUpload = ({ id, center, onFileInput, errorText }) => {
   };
 
   const fileInputChangedHandler = (event) => {
-    console.log('fileInputChangedHandler');
     let targetFile;
     let fileIsValid = isValid;
     if (event.target.files || event.target.files.length === 1) {
@@ -38,9 +44,6 @@ const ImageUpload = ({ id, center, onFileInput, errorText }) => {
       fileIsValid = false;
       setIsValid(false);
     }
-    console.log(id);
-    console.log(fileIsValid);
-    console.log(targetFile);
     onFileInput(id, targetFile, fileIsValid);
   };
 
