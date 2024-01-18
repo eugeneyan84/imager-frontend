@@ -47,15 +47,15 @@ const Login = () => {
       }
     } else {
       try {
+        const formData = new FormData();
+        formData.append('email', formState.inputs.email.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('name', formState.inputs.name.value);
+        formData.append('image', formState.inputs.image.value);
         const response = await sendRequest(
           '/api/users/signup',
           'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          { 'Content-Type': 'application/json' }
+          formData
         );
         authContext.login(response.user.id);
       } catch (error) {
