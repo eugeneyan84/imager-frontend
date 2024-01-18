@@ -11,7 +11,10 @@ const UserItem = ({ item }) => {
       <Card className="user-item__content">
         <Link to={`/${id}/places`}>
           <div className="user-item__image">
-            <Avatar image={imageUrl} alt={name} />
+            <Avatar
+              image={`${import.meta.env.VITE_BACKEND_HOSTNAME}/${imageUrl}`}
+              alt={name}
+            />
           </div>
           <div className="user-item__info">
             <h2>{name}</h2>
