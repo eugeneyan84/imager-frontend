@@ -11,7 +11,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 const PlaceItem = ({ place, onDelete }) => {
-  const { isLoggedIn, userId: authUserId } = useContext(AuthContext);
+  const { userId: authUserId, token } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useApi();
   const { id, imageUrl, title, address, description, location, creator } =
     place;
@@ -39,7 +39,9 @@ const PlaceItem = ({ place, onDelete }) => {
     console.log('Deleting!');
     setShowDeleteConfirmation(false);
     try {
-      await sendRequest(`/api/places/${id}`, 'DELETE');
+      await sendRequest(`/api/places/${id}`, 'DELETE', null, {
+        Authorization: `Bearer ${token}`,
+      });
       onDelete(id);
     } catch (error) {
       console.error(error);
