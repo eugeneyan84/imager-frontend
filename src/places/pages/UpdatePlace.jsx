@@ -19,7 +19,7 @@ import { AuthContext } from '../../shared/context/authContext';
 const UpdatePlace = () => {
   const { isLoading, error, sendRequest, clearError } = useApi();
   const navigate = useNavigate();
-  const { userId } = useContext(AuthContext);
+  const { userId, token } = useContext(AuthContext);
   const [place, setPlace] = useState();
   //const [isLoading, setIsLoading] = useState(true);
   const placeId = useParams().placeId;
@@ -58,7 +58,7 @@ const UpdatePlace = () => {
         title: formState.inputs.title.value,
         description: formState.inputs.description.value,
       }),
-      { 'Content-Type': 'application/json' }
+      { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
     );
     navigate(`/${userId}/places`);
   };
