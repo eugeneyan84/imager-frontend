@@ -16,7 +16,7 @@ import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 const NewPlace = () => {
   const navigate = useNavigate();
-  const { userId } = useContext(AuthContext);
+  const { userId, token } = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useApi();
 
   const { formState, inputHandler } = useForm(
@@ -39,7 +39,9 @@ const NewPlace = () => {
       formData.append('address', formState.inputs.address.value);
       formData.append('creator', userId);
       formData.append('image', formState.inputs.image.value);
-      await sendRequest('/api/places', 'POST', formData);
+      await sendRequest('/api/places', 'POST', formData, {
+        Authorization: `Bearer ${token}`,
+      });
       // redirect to another page
       navigate('/');
     } catch (error) {
