@@ -13,21 +13,28 @@ import UpdatePlace from './places/pages/UpdatePlace';
 import Login from './user/pages/Login';
 import { AuthContext } from './shared/context/authContext';
 
+let authTimer;
+const tokenRefreshDurationMilliseconds = 1000 * 60 * 60;
+
 const App = () => {
   const [token, setToken] = useState();
   const [userId, setUserId] = useState(null);
-  const [expirationTimestamp, setExpirationTimestamp] = useState(0);
+  const [expirationTimestamp, setExpirationTimestamp] = useState();
 
   const login = useCallback((userId, token, expiryTimestamp) => {
+    console.log(`[login] expiryTimestamp: ${expiryTimestamp}`);
     setToken(token);
     setUserId(userId);
-    setExpirationTimestamp(expiryTimestamp);
+    const tokenExpiration =
+      expiryTimestamp ||
+      new Date().getTime() + tokenRefreshDurationMilliseconds;
+    setExpirationTimestamp(tokenExpiration);
     localStorage.setItem(
       'userData',
       JSON.stringify({
         userId: userId,
         token: token,
-        expiryTimestamp: expiryTimestamp,
+        expiryTimestamp: tokenExpiration,
       })
     );
   }, []);
@@ -35,7 +42,7 @@ const App = () => {
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
-    setExpirationTimestamp(0);
+    setExpirationTimestamp(null);
     localStorage.removeItem('userData');
   }, []);
 
@@ -49,6 +56,20 @@ const App = () => {
       login(storedData.userId, storedData.token, storedData.expiryTimestamp);
     }
   }, [login]);
+
+  useEffect(() => {
+    if (token && expirationTimestamp) {
+      const timeDelta = expirationTimestamp - new Date().getTime();
+      console.log(
+        `setting timeout on logout function, delta: ${timeDelta}, ${
+          timeDelta / 1000
+        }s`
+      );
+      authTimer = setTimeout(logout, timeDelta);
+    } else {
+      clearTimeout(authTimer);
+    }
+  }, [token, logout, expirationTimestamp]);
 
   let routes;
   if (token) {
