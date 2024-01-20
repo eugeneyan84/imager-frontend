@@ -16,28 +16,39 @@ import { AuthContext } from './shared/context/authContext';
 const App = () => {
   const [token, setToken] = useState();
   const [userId, setUserId] = useState(null);
+  const [expirationTimestamp, setExpirationTimestamp] = useState(0);
 
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('userData'));
-    if (storedData && storedData.token) {
-      login(storedData.userId, storedData.token);
-    }
-  }, [login]);
-
-  const login = useCallback((userId, token) => {
+  const login = useCallback((userId, token, expiryTimestamp) => {
     setToken(token);
     setUserId(userId);
+    setExpirationTimestamp(expiryTimestamp);
     localStorage.setItem(
       'userData',
-      JSON.stringify({ userId: userId, token: token })
+      JSON.stringify({
+        userId: userId,
+        token: token,
+        expiryTimestamp: expiryTimestamp,
+      })
     );
   }, []);
 
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
+    setExpirationTimestamp(0);
     localStorage.removeItem('userData');
   }, []);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('userData'));
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiryTimestamp) > new Date()
+    ) {
+      login(storedData.userId, storedData.token, storedData.expiryTimestamp);
+    }
+  }, [login]);
 
   let routes;
   if (token) {

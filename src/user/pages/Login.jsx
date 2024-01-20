@@ -40,7 +40,11 @@ const Login = () => {
           { 'Content-Type': 'application/json' }
         );
         console.log(response.user);
-        authContext.login(response.user.id, response.user.token);
+        authContext.login(
+          response.user.id,
+          response.user.token,
+          response.user.expiryTimestamp
+        );
       } catch (error) {
         // do not process further, as error handling is done in useApi
         console.error(error.message);
@@ -57,7 +61,11 @@ const Login = () => {
           'POST',
           formData
         );
-        authContext.login(response.user.id, response.user.token);
+        authContext.login(
+          response.user.id,
+          response.user.token,
+          response.user.expiryTimestamp
+        );
       } catch (error) {
         console.error(error);
       }
