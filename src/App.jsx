@@ -6,11 +6,6 @@ import {
 } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
-//import Users from './user/pages/Users';
-//import NewPlace from './places/pages/NewPlace';
-//import UserPlaces from './places/pages/UserPlaces';
-//import UpdatePlace from './places/pages/UpdatePlace';
-//import Login from './user/pages/Login';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/authContext';
 import { useAuth } from './shared/hooks/useAuth';
