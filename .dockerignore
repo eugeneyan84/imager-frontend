@@ -1,0 +1,12 @@
+node_modules
+.vscode
+.env
+.env_template
+*.md
+.gitignore
+.git
+dist
+config
+.dockerignore
+Dockerfile.dev
+.eslintrc.cjs
