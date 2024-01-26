@@ -53,7 +53,7 @@ VITE_BACKEND_HOSTNAME=<backend url with port>
 4. Navigate to project folder in terminal, run the project:
 
 ```bash
-~/imager-frontend$ npm run dev
+npm run dev
 ```
 
 #### Option B: Serve as a Dockerized application
