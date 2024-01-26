@@ -8,6 +8,8 @@ This repository holds the frontend source-code.
 
 Imager frontend is a ReactJS single-page application built with Vite. Page routes and navigation are made possible with React Router, while a few of the component transitions are made possible with React Transition Group. Google Maps Platform integration to facilitate display of map location for saved places. User authentication handled via JWT issued from backend.
 
+Imager (backend) repository can be accessed [here](https://github.com/eugeneyan84/imager-backend).
+
 ## Features
 
 - Non-registered visitors are able to see list of users and the number of places shared by each of them.
@@ -21,7 +23,7 @@ Imager frontend is a ReactJS single-page application built with Vite. Page route
 
 ### Pre-requisite:
 
-- Backend has been successfully set up and hosted, with a valid endpoint URL for the frontend to reach.
+- Backend has been successfully set up and hosted, with a valid endpoint URL for the frontend to call upon.
 - A valid API key has been obtained from Google Maps Platform for usage within Imager frontend.
 
 ### Steps:
